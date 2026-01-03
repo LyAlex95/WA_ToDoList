@@ -1,7 +1,8 @@
-function ErrandItem() {
+function ErrandItem({ errand }) {
     return (
         <div>
-            <p> Errand item </p>
+            <p> {errand.title} </p>
+            <p> {errand.latitude}Hello I am bug {errand.longitude} </p>
         </div>
     );
 }

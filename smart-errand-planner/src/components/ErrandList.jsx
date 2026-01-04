@@ -1,6 +1,6 @@
 import ErrandItem from "./ErrandItem.Jsx";
 
-function ErrandList({ errands }) {
+function ErrandList({ errands, onComplete }) {
     console.log("Errands received:", errands)
     return (
         <div>
@@ -9,7 +9,7 @@ function ErrandList({ errands }) {
             </br>
                 Displaying Closest errand at the top, Farthest errand at the bottom
             </p>
-            {errands.map((errand, onComplete) => (
+            {errands.map(errand => (
                 <ErrandItem 
                     key={errand.id}
                     errand={errand}

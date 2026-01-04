@@ -17,7 +17,7 @@ function getDistance(lat1, lng1, lat2, lng2) {
 }
 
 function App() {
-  const [errands] = useState([
+  const [errands, setErrands] = useState([
     {
       id: 1,
       title: "Buy groceries(ID1)",
@@ -47,26 +47,31 @@ function App() {
       completed: false,
     },
   ]);
-  const sortedErrands = [...errands].sort((a, b) => {
-    const distanceA = getDistance(
-      USER_LOCATION.latitude,
-      USER_LOCATION.longitude,
-      a.latitude,
-      a.longitude
-    );
+  const [filter, setFilter] = useState("all");
+  const sortedErrands = errands 
+    .map(errand => {
+      const distance = getDistance(
+        USER_LOCATION.latitude,
+        USER_LOCATION.longitude,
+        errand.latitude,
+        errand.longitude
+      );
 
-    const distanceB = getDistance(
-      USER_LOCATION.latitude,
-      USER_LOCATION.longitude,
-      b.latitude,
-      b.longitude
-    );
+      return {
+        ...errand,
+        distance,
+      };
+    })
+    .sort((a ,b) => a.distance - b.distance);
 
-    return distanceA - distanceB;
+  const visibleErrands = sortedErrands.filter( errand => {
+    if (filter === "completed") return errand.completed;
+    if (filter === "pending") return !errand.completed;
+    return true;
   });
 
   function markErrandComplete(id) {
-    sortedErrands(prevErrands => 
+    setErrands(prevErrands => 
       prevErrands.map(errand =>
         errand.id === id
           ? { ...errand, completed: true }
@@ -77,11 +82,27 @@ function App() {
   return (
     <div>
       <h1>Smart Errand Planner</h1>
+      <p>Your Location:{""} {USER_LOCATION.latitude}, {USER_LOCATION.longitude}</p>
+      <div>
+        <button onClick={() => setFilter("all")}>
+          All
+        </button>
+
+        <button onClick={() => setFilter("pending")}>
+          Pending
+        </button>
+
+        <button onClick={() => setFilter("completed")}>
+          Completed
+        </button>
+      </div>
+
       <ErrandForm />
-      <ErrandList errands={sortedErrands}
-                  onComplete={markErrandComplete} />
+      <ErrandList 
+        errands={visibleErrands}
+        onComplete={markErrandComplete} />
     </div>
-  );
-}
+  )};
+
 
 export default App;

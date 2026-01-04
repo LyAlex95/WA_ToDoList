@@ -7,8 +7,12 @@ function ErrandItem({ errand, onComplete }) {
     return (
         <div>
             <p>
-                {errand.completed ? "check please" : ""}
+                {errand.completed ? "Completed: " : ""}
                 {errand.title}
+            </p>
+            <p>
+                Distance score: {""}
+                {errand.distance.toFixed(4)}
             </p>
             <p>
                 Lat: {errand.latitude}, Lng: {errand.longitude}

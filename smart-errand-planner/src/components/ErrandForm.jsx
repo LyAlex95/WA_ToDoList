@@ -1,9 +1,5 @@
 function ErrandForm() {
-    return (
-        <div>
-            <h2> Add Errand </h2>
-        </div>
-    );
+    return null;
 }
 
 export default ErrandForm;
